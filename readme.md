@@ -119,3 +119,128 @@ A continuación se presenta un listado de las tablas que comprenden la base de d
 - Cada tabla se ha diseñado siguiendo las buenas prácticas de modelado de bases de datos, garantizando la integridad de los datos y la eficiencia en el acceso.
 - Se han establecido relaciones entre las tablas utilizando claves primarias y foráneas para mantener la coherencia de los datos.
 - La estructura de la base de datos permite un seguimiento detallado de los pedidos, la gestión de usuarios y la administración del inventario.
+
+## Script de Creación de Base de Datos y Tablas
+
+```sql
+-- Creación de la base de datos
+CREATE DATABASE IF NOT EXISTS LaArgentinaStore;
+
+-- Uso de la base de datos
+USE LaArgentinaStore;
+
+-- Tabla User (Usuario)
+CREATE TABLE IF NOT EXISTS User (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255) NOT NULL
+);
+
+-- Tabla Role (Rol)
+CREATE TABLE IF NOT EXISTS Role (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(255) NOT NULL
+);
+
+-- Tabla UserRole (Relación Usuario-Rol)
+CREATE TABLE IF NOT EXISTS UserRole (
+    user_id INT,
+    role_id INT,
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (role_id) REFERENCES Role(role_id),
+    PRIMARY KEY (user_id, role_id)
+);
+
+-- Tabla State (Estado)
+CREATE TABLE IF NOT EXISTS State (
+    state_id INT AUTO_INCREMENT PRIMARY KEY,
+    state_name VARCHAR(255) NOT NULL,
+    description TEXT
+);
+
+-- Tabla OrderDetail (Detalle de Pedido)
+CREATE TABLE IF NOT EXISTS OrderDetail (
+    order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    state_id INT,
+    order_date DATETIME,
+    FOREIGN KEY (user_id) REFERENCES User(user_id),
+    FOREIGN KEY (state_id) REFERENCES State(state_id)
+);
+
+-- Tabla Product (Producto)
+CREATE TABLE IF NOT EXISTS Product (
+    product_id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    price DECIMAL(10, 2),
+    stock INT
+);
+
+-- Tabla OrderProduct (Relación Pedido-Producto)
+CREATE TABLE IF NOT EXISTS OrderProduct (
+    order_detail_id INT,
+    product_id INT,
+    FOREIGN KEY (order_detail_id) REFERENCES OrderDetail(order_detail_id),
+    FOREIGN KEY (product_id) REFERENCES Product(product_id),
+    PRIMARY KEY (order_detail_id, product_id)
+);
+
+-- Tabla Session (Sesión)
+CREATE TABLE IF NOT EXISTS Session (
+    session_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    start_date DATETIME,
+    end_date DATETIME,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Tabla AccessHistory (Historial de Acceso)
+CREATE TABLE IF NOT EXISTS AccessHistory (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    access_date DATETIME,
+    action VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Tabla ShippingAddress (Dirección de Envío)
+CREATE TABLE IF NOT EXISTS ShippingAddress (
+    address_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    address VARCHAR(255),
+    city VARCHAR(255),
+    postal_code VARCHAR(20),
+    country VARCHAR(255),
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Tabla PaymentMethod (Método de Pago)
+CREATE TABLE IF NOT EXISTS PaymentMethod (
+    method_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    type VARCHAR(255),
+    number VARCHAR(255),
+    expiration_date DATE,
+    FOREIGN KEY (user_id) REFERENCES User(user_id)
+);
+
+-- Tabla OrderShippingAddress (Relación Pedido-Dirección de Envío)
+CREATE TABLE IF NOT EXISTS OrderShippingAddress (
+    order_detail_id INT,
+    address_id INT,
+    FOREIGN KEY (order_detail_id) REFERENCES OrderDetail(order_detail_id),
+    FOREIGN KEY (address_id) REFERENCES ShippingAddress(address_id),
+    PRIMARY KEY (order_detail_id, address_id)
+);
+
+-- Tabla OrderPaymentMethod (Relación Pedido-Método de Pago)
+CREATE TABLE IF NOT EXISTS OrderPaymentMethod (
+    order_detail_id INT,
+    method_id INT,
+    FOREIGN KEY (order_detail_id) REFERENCES OrderDetail(order_detail_id),
+    FOREIGN KEY (method_id) REFERENCES PaymentMethod(method_id),
+    PRIMARY KEY (order_detail_id, method_id)
+);
+```
