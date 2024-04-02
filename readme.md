@@ -114,12 +114,6 @@ A continuación se presenta un listado de las tablas que comprenden la base de d
 - order_detail_id (ID de detalle de pedido, FK): INT - Identificador del detalle de pedido.
 - method_id (ID de método de pago, FK): INT - Identificador del método de pago.
 
-## Observaciones
-
-- Cada tabla se ha diseñado siguiendo las buenas prácticas de modelado de bases de datos, garantizando la integridad de los datos y la eficiencia en el acceso.
-- Se han establecido relaciones entre las tablas utilizando claves primarias y foráneas para mantener la coherencia de los datos.
-- La estructura de la base de datos permite un seguimiento detallado de los pedidos, la gestión de usuarios y la administración del inventario.
-
 ## Script de Creación de Base de Datos y Tablas
 
 ```sql
@@ -244,3 +238,9 @@ CREATE TABLE IF NOT EXISTS OrderPaymentMethod (
     PRIMARY KEY (order_detail_id, method_id)
 );
 ```
+
+## Observaciones
+
+- Cada tabla se ha diseñado siguiendo las buenas prácticas de modelado de bases de datos, garantizando la integridad de los datos y la eficiencia en el acceso.
+- Se han establecido relaciones entre las tablas utilizando claves primarias y foráneas para mantener la coherencia de los datos.
+- La estructura de la base de datos permite un seguimiento detallado de los pedidos, la gestión de usuarios y la administración del inventario.
