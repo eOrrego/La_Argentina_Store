@@ -1,8 +1,8 @@
+# La Argentina Store
+
 <p align="center">
   <img src="https://raw.githubusercontent.com/eOrrego/La_Argentina_Store/main/logo_LaArgentina.png" alt="Logo La Argentina">
 </p>
-
-![Logo La Argentina](https://raw.githubusercontent.com/eOrrego/La_Argentina_Store/main/logo_LaArgentina.png)
 
 # Temática del Proyecto
 
