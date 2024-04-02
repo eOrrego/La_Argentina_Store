@@ -20,88 +20,89 @@ El sistema incluirá las siguientes características principales:
 
 A continuación se presenta un listado de las tablas que comprenden la base de datos, junto con una descripción de cada tabla y los campos asociados:
 
-1. **User (Usuario)**:
+1. ## User (Usuario)
 
-   - user_id (ID de usuario)
-   - full_name (Nombre completo)
-   - email (Correo electrónico)
-   - password (Contraseña)
+- user_id (ID de usuario, PK): INT - Identificador único del usuario.
+- full_name (Nombre completo): VARCHAR - Nombre completo del usuario.
+- email (Correo electrónico): VARCHAR - Dirección de correo electrónico del usuario.
+- password (Contraseña): VARCHAR - Contraseña del usuario.
 
-2. **Role (Rol)**:
+2. ## Role (Rol)
 
-   - role_id (ID de rol)
-   - role_name (Nombre de rol)
+- role_id (ID de rol, PK): INT - Identificador único del rol.
+- role_name (Nombre de rol): VARCHAR - Nombre descriptivo del rol.
 
-3. **UserRole (Relación Usuario-Rol)**:
+3. ## UserRole (Relación Usuario-Rol)
 
-   - user_id (ID de usuario)
-   - role_id (ID de rol)
+- user_id (ID de usuario, FK): INT - Identificador del usuario.
+- role_id (ID de rol, FK): INT - Identificador del rol.
 
-4. **State (Estado)**:
+4. ## State (Estado)
 
-   - state_id (ID de estado)
-   - state_name (Nombre de estado)
-   - description (Descripción del estado)
+- state_id (ID de estado, PK): INT - Identificador único del estado.
+- state_name (Nombre de estado): VARCHAR - Nombre descriptivo del estado.
+- description (Descripción): TEXT - Descripción del estado.
 
-5. **OrderDetail (Detalle de Pedido)**:
+5. ## OrderDetail (Detalle de Pedido)
 
-   - order_detail_id (ID de detalle de pedido)
-   - user_id (ID de usuario)
-   - state_id (ID de estado)
-   - order_date (Fecha de pedido)
+- order_detail_id (ID de detalle de pedido, PK): INT - Identificador único del detalle de pedido.
+- user_id (ID de usuario, FK): INT - Identificador del usuario asociado al pedido.
+- state_id (ID de estado, FK): INT - Identificador del estado del pedido.
+- order_date (Fecha de pedido): DATETIME - Fecha en que se realizó el pedido.
 
-6. **Product (Producto)**:
+6. ## Product (Producto)
 
-   - product_id (ID de producto)
-   - product_name (Nombre de producto)
-   - description (Descripción del producto)
-   - price (Precio del producto)
-   - stock (Stock disponible)
+- product_id (ID de producto, PK): INT - Identificador único del producto.
+- product_name (Nombre de producto): VARCHAR - Nombre descriptivo del producto.
+- description (Descripción): TEXT - Descripción del producto.
+- price (Precio): DECIMAL - Precio del producto.
+- stock (Stock): INT - Cantidad disponible en stock del producto.
 
-7. **OrderProduct (Relación Pedido-Producto)**:
+7. ## OrderProduct (Relación Pedido-Producto)
 
-   - order_detail_id (ID de detalle de pedido)
-   - product_id (ID de producto)
+- order_detail_id (ID de detalle de pedido, FK): INT - Identificador del detalle de pedido.
+- product_id (ID de producto, FK): INT - Identificador del producto.
 
-8. **Session (Sesión)**:
+8. ## Session (Sesión)
 
-   - session_id (ID de sesión)
-   - user_id (ID de usuario)
-   - start_date (Fecha de inicio)
-   - end_date (Fecha de fin)
+- session_id (ID de sesión, PK): INT - Identificador único de la sesión.
+- user_id (ID de usuario, FK): INT - Identificador del usuario asociado a la sesión.
+- start_date (Fecha de inicio): DATETIME - Fecha y hora de inicio de la sesión.
+- end_date (Fecha de fin): DATETIME - Fecha y hora de fin de la sesión.
 
-9. **AccessHistory (Historial de Acceso)**:
+9. ## AccessHistory (Historial de Acceso)
 
-   - history_id (ID de historial)
-   - user_id (ID de usuario)
-   - access_date (Fecha de acceso)
-   - action (Acción realizada)
+- history_id (ID de historial, PK): INT - Identificador único del registro en el historial.
+- user_id (ID de usuario, FK): INT - Identificador del usuario asociado al acceso.
+- access_date (Fecha de acceso): DATETIME - Fecha y hora en que se realizó el acceso.
+- action (Acción): VARCHAR - Descripción de la acción realizada durante el acceso.
 
-10. **ShippingAddress (Dirección de Envío)**:
+10. ## ShippingAddress (Dirección de Envío)
 
-    - address_id (ID de dirección)
-    - user_id (ID de usuario)
-    - address (Dirección)
-    - city (Ciudad)
-    - postal_code (Código Postal)
-    - country (País)
+- address_id (ID de dirección, PK): INT - Identificador único de la dirección de envío.
+- user_id (ID de usuario, FK): INT - Identificador del usuario asociado a la dirección de envío.
+- address (Dirección): VARCHAR - Dirección de envío.
+- city (Ciudad): VARCHAR - Ciudad de envío.
+- postal_code (Código Postal): VARCHAR - Código postal de la dirección de envío.
+- country (País): VARCHAR - País de envío.
 
-11. **PaymentMethod (Método de Pago)**:
+11. ## PaymentMethod (Método de Pago)
 
-    - method_id (ID de método de pago)
-    - user_id (ID de usuario)
-    - type (Tipo de método de pago)
-    - number (Número de tarjeta)
-    - expiration_date (Fecha de vencimiento)
+- method_id (ID de método de pago, PK): INT - Identificador único del método de pago.
+- user_id (ID de usuario, FK): INT - Identificador del usuario asociado al método de pago.
+- type (Tipo): VARCHAR - Tipo de método de pago (tarjeta de crédito, débito, etc.).
+- number (Número): VARCHAR - Número de la tarjeta o método de pago.
+- expiration_date (Fecha de vencimiento): DATE - Fecha de vencimiento del método de pago.
 
-12. **OrderShippingAddress (Relación Pedido-Dirección de Envío)**:
+12. ## OrderShippingAddress (Relación Pedido-Dirección de Envío)
 
-    - order_detail_id (ID de detalle de pedido)
-    - address_id (ID de dirección)
+- order_detail_id (ID de detalle de pedido, FK): INT - Identificador del detalle de pedido.
+- address_id (ID de dirección, FK): INT - Identificador de la dirección de envío.
 
-13. **OrderPaymentMethod (Relación Pedido-Método de Pago)**:
-    - order_detail_id (ID de detalle de pedido)
-    - method_id (ID de método de pago)
+13. ## OrderPaymentMethod (Relación Pedido-Método de Pago)
+
+- order_detail_id (ID de detalle de pedido, FK): INT - Identificador del detalle de pedido.
+- method_id (ID de método de pago, FK): INT - Identificador del método de pago.
 
 ## Observaciones
 
