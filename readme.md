@@ -1,10 +1,8 @@
+![Logo La Argentina](https://raw.githubusercontent.com/eOrrego/La_Argentina_Store/main/logo_LaArgentina.png)
+
 # Temática del Proyecto
 
 El proyecto se centra en el desarrollo de un sistema de comercio electrónico para "La Argentina", una tienda de ropa especializada en la fabricación de modelos exclusivos para hombres y mujeres. El sistema proporcionará una plataforma en línea donde los clientes puedan explorar, seleccionar y adquirir productos únicos fabricados por la marca.
-
-## Diagrama ER
-
-![Diagrama ER](https://raw.githubusercontent.com/eOrrego/La_Argentina_Store/main/DiagramER.png)
 
 ## Descripción del Proyecto
 
@@ -19,6 +17,10 @@ El sistema incluirá las siguientes características principales:
 4. **Gestión de Pedidos**: Se registrará información detallada sobre cada pedido realizado, incluyendo el usuario que realizó el pedido, el estado del pedido, los productos seleccionados y la fecha de compra. Esto permitirá un seguimiento preciso del estado de cada pedido y facilitará la atención al cliente.
 
 5. **Direcciones de Envío y Métodos de Pago**: Se permitirá a los usuarios almacenar múltiples direcciones de envío y métodos de pago en sus perfiles. Esto facilitará el proceso de compra al permitir a los clientes seleccionar rápidamente la dirección de envío y el método de pago preferidos durante el proceso de compra.
+
+## Diagrama ER
+
+![Diagrama ER](https://raw.githubusercontent.com/eOrrego/La_Argentina_Store/main/DiagramER.png)
 
 ## Listado de Tablas y Campos
 
