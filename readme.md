@@ -1,95 +1,110 @@
-# Proyecto Ecommerce La Argentina
+# Temática del Proyecto
 
-## Temática del Proyecto
+El proyecto se centra en el desarrollo de un sistema de comercio electrónico para "La Argentina", una tienda de ropa especializada en la fabricación de modelos exclusivos para hombres y mujeres. El sistema proporcionará una plataforma en línea donde los clientes puedan explorar, seleccionar y adquirir productos únicos fabricados por la marca.
 
-El proyecto consiste en el desarrollo de un sistema de comercio electrónico para "La Argentina", una tienda de ropa especializada en modelos exclusivos para hombres y mujeres. Este sistema ofrece una plataforma en línea que permite a los clientes explorar y adquirir productos únicos fabricados por la marca.
+## Descripción del Proyecto
 
-El sistema cuenta con un sistema de gestión de usuarios que incluye roles como administradores, publicadores y clientes, garantizando un control seguro y eficiente del acceso a la plataforma. Además, se incorpora un robusto control de sesiones y un historial de acceso para mejorar la seguridad y el seguimiento de la actividad del usuario.
+El sistema incluirá las siguientes características principales:
 
-La gestión de inventario se optimiza mediante el seguimiento del stock por depósitos, asegurando la disponibilidad de productos en todo momento. Los clientes pueden realizar compras de forma segura y modificar sus perfiles según sea necesario. Además, se permite a los usuarios almacenar múltiples direcciones de envío y métodos de pago para facilitar las transacciones.
+1. **Gestión de Usuarios**: Se implementará un sistema de gestión de usuarios que incluirá diferentes roles, como administradores, publicadores y clientes. Cada rol tendrá permisos específicos dentro del sistema para garantizar un control seguro y eficiente del acceso a la plataforma.
 
-## Detalle de Base de Datos y Tablas
+2. **Gestión de Inventario**: Se llevará un seguimiento del stock de productos por depósitos, asegurando la disponibilidad de los productos en todo momento. Esto permitirá una gestión eficiente del inventario y evitará la sobreventa de productos.
 
-### Usuario
+3. **Proceso de Compra**: Los clientes podrán realizar compras de forma segura a través de la plataforma. Se proporcionará un proceso de compra intuitivo y fácil de usar que incluirá la selección de productos, la revisión del carrito de compras, la selección de opciones de envío y pago, y la confirmación del pedido.
 
-- user_id (PK): Identificador único del usuario.
-- full_name: Nombre completo del usuario.
-- email: Correo electrónico del usuario.
-- password: Contraseña del usuario.
+4. **Gestión de Pedidos**: Se registrará información detallada sobre cada pedido realizado, incluyendo el usuario que realizó el pedido, el estado del pedido, los productos seleccionados y la fecha de compra. Esto permitirá un seguimiento preciso del estado de cada pedido y facilitará la atención al cliente.
 
-### Rol
+5. **Direcciones de Envío y Métodos de Pago**: Se permitirá a los usuarios almacenar múltiples direcciones de envío y métodos de pago en sus perfiles. Esto facilitará el proceso de compra al permitir a los clientes seleccionar rápidamente la dirección de envío y el método de pago preferidos durante el proceso de compra.
 
-- role_id (PK): Identificador único del rol.
-- role_name: Nombre del rol.
+## Listado de Tablas y Campos
 
-### UserRole
+A continuación se presenta un listado de las tablas que comprenden la base de datos, junto con una descripción de cada tabla y los campos asociados:
 
-- user_id (FK, PK): Clave foránea que referencia el user_id en la tabla Usuario.
-- role_id (FK, PK): Clave foránea que referencia el role_id en la tabla Rol.
+1. **User (Usuario)**:
 
-### Pedido
+   - user_id (ID de usuario)
+   - full_name (Nombre completo)
+   - email (Correo electrónico)
+   - password (Contraseña)
 
-- order_detail_id (PK): Identificador único del pedido.
-- user_id (FK): Clave foránea que referencia el user_id en la tabla Usuario.
-- state_id (FK): Clave foránea que referencia el state_id en la tabla Estado.
-- order_date: Fecha en que se realizó el pedido.
+2. **Role (Rol)**:
 
-### Producto
+   - role_id (ID de rol)
+   - role_name (Nombre de rol)
 
-- product_id (PK): Identificador único del producto.
-- product_name: Nombre del producto.
-- description: Descripción del producto.
-- price: Precio del producto.
-- stock: Cantidad disponible en stock.
+3. **UserRole (Relación Usuario-Rol)**:
 
-### PedidoProducto
+   - user_id (ID de usuario)
+   - role_id (ID de rol)
 
-- order_detail_id (FK, PK): Clave foránea que referencia el order_detail_id en la tabla Pedido.
-- product_id (FK, PK): Clave foránea que referencia el product_id en la tabla Producto.
+4. **State (Estado)**:
 
-### Estado
+   - state_id (ID de estado)
+   - state_name (Nombre de estado)
+   - description (Descripción del estado)
 
-- state_id (PK): Identificador único del estado.
-- state_name: Nombre del estado.
-- description: Descripción del estado.
+5. **OrderDetail (Detalle de Pedido)**:
 
-### Sesión
+   - order_detail_id (ID de detalle de pedido)
+   - user_id (ID de usuario)
+   - state_id (ID de estado)
+   - order_date (Fecha de pedido)
 
-- session_id (PK): Identificador único de la sesión.
-- user_id (FK): Clave foránea que referencia el user_id en la tabla Usuario.
-- start_date: Fecha y hora de inicio de la sesión.
-- end_date: Fecha y hora de finalización de la sesión.
+6. **Product (Producto)**:
 
-### HistorialAcceso
+   - product_id (ID de producto)
+   - product_name (Nombre de producto)
+   - description (Descripción del producto)
+   - price (Precio del producto)
+   - stock (Stock disponible)
 
-- history_id (PK): Identificador único del registro de acceso.
-- user_id (FK): Clave foránea que referencia el user_id en la tabla Usuario.
-- access_date: Fecha y hora del acceso.
-- action: Descripción de la acción realizada por el usuario.
+7. **OrderProduct (Relación Pedido-Producto)**:
 
-### DirecciónEnvío
+   - order_detail_id (ID de detalle de pedido)
+   - product_id (ID de producto)
 
-- address_id (PK): Identificador único de la dirección de envío.
-- user_id (FK): Clave foránea que referencia el user_id en la tabla Usuario.
-- address: Dirección de envío.
-- city: Ciudad de envío.
-- postal_code: Código postal de envío.
-- country: País de envío.
+8. **Session (Sesión)**:
 
-### MetodoPago
+   - session_id (ID de sesión)
+   - user_id (ID de usuario)
+   - start_date (Fecha de inicio)
+   - end_date (Fecha de fin)
 
-- method_id (PK): Identificador único del método de pago.
-- user_id (FK): Clave foránea que referencia el user_id en la tabla Usuario.
-- type: Tipo de método de pago (tarjeta de crédito, PayPal, etc.).
-- number: Número de la tarjeta de crédito u otro identificador del método de pago.
-- expiration_date: Fecha de vencimiento del método de pago.
+9. **AccessHistory (Historial de Acceso)**:
 
-### PedidoDireccion
+   - history_id (ID de historial)
+   - user_id (ID de usuario)
+   - access_date (Fecha de acceso)
+   - action (Acción realizada)
 
-- order_detail_id (FK, PK): Clave foránea que referencia el order_detail_id en la tabla Pedido.
-- address_id (FK, PK): Clave foránea que referencia el address_id en la tabla DirecciónEnvío.
+10. **ShippingAddress (Dirección de Envío)**:
 
-### PedidoMetodoPago
+    - address_id (ID de dirección)
+    - user_id (ID de usuario)
+    - address (Dirección)
+    - city (Ciudad)
+    - postal_code (Código Postal)
+    - country (País)
 
-- order_detail_id (FK, PK): Clave foránea que referencia el order_detail_id en la tabla Pedido.
-- method_id (FK, PK): Clave foránea que referencia el method_id en la tabla MetodoPago.
+11. **PaymentMethod (Método de Pago)**:
+
+    - method_id (ID de método de pago)
+    - user_id (ID de usuario)
+    - type (Tipo de método de pago)
+    - number (Número de tarjeta)
+    - expiration_date (Fecha de vencimiento)
+
+12. **OrderShippingAddress (Relación Pedido-Dirección de Envío)**:
+
+    - order_detail_id (ID de detalle de pedido)
+    - address_id (ID de dirección)
+
+13. **OrderPaymentMethod (Relación Pedido-Método de Pago)**:
+    - order_detail_id (ID de detalle de pedido)
+    - method_id (ID de método de pago)
+
+## Observaciones
+
+- Cada tabla se ha diseñado siguiendo las buenas prácticas de modelado de bases de datos, garantizando la integridad de los datos y la eficiencia en el acceso.
+- Se han establecido relaciones entre las tablas utilizando claves primarias y foráneas para mantener la coherencia de los datos.
+- La estructura de la base de datos permite un seguimiento detallado de los pedidos, la gestión de usuarios y la administración del inventario.
