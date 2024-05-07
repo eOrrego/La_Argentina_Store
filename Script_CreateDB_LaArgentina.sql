@@ -202,5 +202,156 @@ INSERT INTO OrderPaymentMethod (order_detail_id, method_id) VALUES
 (2, 2),
 (3, 3);
 
+-- Vistas
+
+-- Vista que muestra los roles asignados a cada usuario.
+CREATE VIEW UserRolesView AS
+SELECT u.user_id, u.full_name, u.email, r.role_name
+FROM User u
+JOIN UserRole ur ON u.user_id = ur.user_id
+JOIN Role r ON ur.role_id = r.role_id;
+
+-- Vista que muestra los pedidos pendientes de procesar.
+CREATE VIEW PendingOrdersView AS
+SELECT od.order_detail_id, od.user_id, od.state_id, od.order_date
+FROM OrderDetail od
+JOIN State s ON od.state_id = s.state_id
+WHERE s.state_name = 'Pending';
+
+-- Vista que muestra los productos que están fuera de stock.
+CREATE VIEW OutOfStockProductsView AS
+SELECT *
+FROM Product
+WHERE stock = 0;
+
+-- Funciones
+
+-- Función para calcular el total de un pedido.
+DELIMITER //
+CREATE FUNCTION CalculateOrderTotal(orderId INT) RETURNS DECIMAL(10,2) DETERMINISTIC
+BEGIN
+    DECLARE total DECIMAL(10,2);
+    SELECT SUM(Product.price)
+    INTO total
+    FROM OrderProduct
+    INNER JOIN Product ON OrderProduct.product_id = Product.product_id
+    WHERE OrderProduct.order_detail_id = orderId;
+    RETURN total;
+END;
+//
+
+-- Función para contar la cantidad de productos en un pedido.
+DELIMITER //
+CREATE FUNCTION CountProductsInOrder(orderId INT) RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE productCount INT;
+    SELECT COUNT(*)
+    INTO productCount
+    FROM OrderProduct
+    WHERE order_detail_id = orderId;
+    RETURN productCount;
+END;
+//
+
+-- Función para obtener el estado actual de un pedido.
+DELIMITER //
+CREATE FUNCTION GetCurrentOrderState(orderId INT) RETURNS VARCHAR(255) DETERMINISTIC
+BEGIN
+    DECLARE currentState VARCHAR(255);
+    SELECT State.state_name
+    INTO currentState
+    FROM OrderDetail
+    INNER JOIN State ON OrderDetail.state_id = State.state_id
+    WHERE OrderDetail.order_detail_id = orderId;
+    RETURN currentState;
+END;
+//
+
+-- Stored Procedures
+
+-- Procedimiento para registrar un nuevo usuario.
+DELIMITER //
+CREATE PROCEDURE RegisterUser(
+    IN fullName VARCHAR(255),
+    IN email VARCHAR(255),
+    IN pass VARCHAR(255)
+)
+BEGIN
+    INSERT INTO User (full_name, email, password)
+    VALUES (fullName, email, pass);
+END //
+DELIMITER ;
+
+-- Procedimiento para actualizar la información de un usuario.
+DELIMITER //
+CREATE PROCEDURE UpdateUserInfo(
+    IN userId INT,
+    IN newFullName VARCHAR(255),
+    IN newEmail VARCHAR(255)
+)
+BEGIN
+    UPDATE User
+    SET full_name = newFullName,
+        email = newEmail
+    WHERE user_id = userId;
+END //
+DELIMITER ;
+
+-- Procedimiento para eliminar un usuario.
+DELIMITER //
+CREATE PROCEDURE DeleteUser(
+    IN userId INT
+)
+BEGIN
+    DELETE FROM User WHERE user_id = userId;
+END //
+DELIMITER ;
+
+-- Triggers
+
+-- Trigger para registrar el acceso de un usuario.
+DELIMITER //
+CREATE TRIGGER LogUserAccess
+AFTER INSERT ON Session
+FOR EACH ROW
+BEGIN
+    INSERT INTO AccessHistory (user_id, access_date, action)
+    VALUES (NEW.user_id, NEW.start_date, 'Login');
+END //
+DELIMITER ;
+
+-- Trigger para notificar al administrador sobre un nuevo pedido pendiente.
+DELIMITER //
+CREATE TRIGGER NotifyAdminOfPendingOrder
+AFTER INSERT ON OrderDetail
+FOR EACH ROW
+BEGIN
+    IF NEW.state_id = (SELECT state_id FROM State WHERE state_name = 'Pending') THEN
+        INSERT INTO AdminNotifications (order_id, notification_date)
+        VALUES (NEW.order_detail_id, NOW());
+    END IF;
+END //
+DELIMITER ;
+
+-- Trigger para actualizar el stock de productos después de agregar un nuevo pedido.
+DELIMITER $$
+CREATE TRIGGER update_product_stock AFTER INSERT ON OrderProduct
+FOR EACH ROW
+BEGIN
+    DECLARE product_quantity INT;
+    
+    -- Obtener la cantidad del producto del pedido
+    SELECT quantity INTO product_quantity
+    FROM OrderDetail
+    WHERE order_detail_id = NEW.order_detail_id;
+    
+    -- Actualizar el stock del producto
+    UPDATE Product
+    SET stock = stock - product_quantity
+    WHERE product_id = NEW.product_id;
+END$$
+DELIMITER ;
+
+
 -- Show success message
 SELECT 'Database and sample data created successfully.' AS 'Message';
